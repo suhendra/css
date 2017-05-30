@@ -1,6 +1,7 @@
 class CountersController < ApplicationController
   before_action :authenticate_user!
   before_action :set_counter, only: [:show, :edit, :update, :destroy]
+  load_and_authorize_resource
 
   # GET /counters
   # GET /counters.json

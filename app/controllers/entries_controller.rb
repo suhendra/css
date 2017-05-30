@@ -1,6 +1,7 @@
 class EntriesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_entry, only: [:show, :edit, :update, :destroy]
+  load_and_authorize_resource
 
   # GET /entries
   # GET /entries.json
