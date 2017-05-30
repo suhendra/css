@@ -28,4 +28,22 @@ module ApplicationHelper
 
     html.html_safe
   end
+  def labs_error_messages!
+    return '' if @user.errors.empty?
+
+    messages = @user.errors.full_messages.map { |msg| content_tag(:li, msg) }.join
+    sentence = I18n.t('errors.messages.not_saved',
+      count: @user.errors.count,
+      resource: @user.class.model_name.human.downcase)
+
+    html = <<-HTML
+    <div class="alert alert-danger alert-block devise-bs">
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+      <h5>#{sentence}</h5>
+      <ul>#{messages}</ul>
+    </div>
+    HTML
+
+    html.html_safe
+  end
 end

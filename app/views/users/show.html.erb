@@ -1,0 +1,15 @@
+<div class="col-md-4 col-md-offset-4">
+  <div class="panel panel-default">
+    <div class="panel-body">
+    <p> <strong>Firstname</strong> <%= @user.firstname.humanize %></p>
+        <p> <strong>Lastname</strong> <%= @user.lastname.humanize %></p>
+        <p> <strong>Username</strong> <%= @user.username %></p>
+        <p> <strong>Email</strong> <%= @user.email %></p>
+        <p> <strong>Counter Name</strong> <%= @user.counter_name %></p>
+        <p> <strong>Role</strong> <%= @user.role %></p>
+        <br>
+      <%= link_to 'Edit', edit_user_path(@user), class: 'btn btn-default' %>
+      <%= link_to 'Back', users_path, class: 'btn btn-default' %>
+    </div>
+  </div>
+</div>
