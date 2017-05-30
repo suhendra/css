@@ -19,9 +19,7 @@
   </thead>
 
   <tbody>
-    <% @counters.each do |counter| %>
-        <% if counter.users.present? %>
-          <% counter.users.each do |user| %>
+          <% @users.each do |user| %>
             <tr>
             <td><%= user.counter_name %></td>
             <td><%= user.firstname %></td>
@@ -37,8 +35,6 @@
                 <% end %>
             </tr>
           <% end %>
-        <% end %>
-    <% end %>
   </tbody>
 </table>
 
