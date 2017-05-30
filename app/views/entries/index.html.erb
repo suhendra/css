@@ -20,26 +20,24 @@
 
   <tbody>
     <% @counters.each do |counter| %>
-      <tr>
-            <td><%= counter.name %></td>
         <% if counter.users.present? %>
           <% counter.users.each do |user| %>
+            <tr>
+            <td><%= user.counter_name %></td>
             <td><%= user.firstname %></td>
             <td><%= user.email %></td>
             <td><%= user.role %></td>
-            <% if user.entries.present? %>
-                <td><%= user.entries.count(3) %></td>
-                <td><%= user.entries.count(2) %></td>
-                <td><%= user.entries.count(1) %></td>
-                <td><%= user.entries.count(0) %></td>
-            <% else %>
-              <td colspan="4">This user have no feedback yet.</td>
-            <% end %>
+                <% if user.entries.present? %>
+                    <td><%= user.entries.where(feedback: '3').count('feedback') %></td>
+                    <td><%= user.entries.where(feedback: '2').count('feedback') %></td>
+                    <td><%= user.entries.where(feedback: '1').count('feedback') %></td>
+                    <td><%= user.entries.where(feedback: '0').count('feedback') %></td>
+                <% else %>
+                  <td colspan="4">This user have no feedback yet.</td>
+                <% end %>
+            </tr>
           <% end %>
-        <% else %>
-          <td colspan="7">This counter have no users and feedback yet.</td>
         <% end %>
-      </tr>
     <% end %>
   </tbody>
 </table>
