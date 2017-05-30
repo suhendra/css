@@ -2,11 +2,7 @@
   <%= f.error_notification %>
 
   <div class="inputs">
-    <%= f.association :user %>
-    <%= f.association :counter %>
-    <%= f.input :date %>
-    <%= f.input :feedback %>
-    <%= f.input :description %>
+    <%= f.input :feedback, collection: Entry.feedback_option_list %>
   </div>
 
   <div class="actions">

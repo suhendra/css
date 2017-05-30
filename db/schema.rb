@@ -39,7 +39,7 @@ ActiveRecord::Schema.define(version: 20170530041425) do
     t.string "firstname"
     t.string "lastname"
     t.string "email", default: "", null: false
-    t.bigint "counter_id"
+    t.integer "counter_id"
     t.string "role"
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
@@ -51,7 +51,6 @@ ActiveRecord::Schema.define(version: 20170530041425) do
     t.string "last_sign_in_ip"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["counter_id"], name: "index_users_on_counter_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["username"], name: "index_users_on_username", unique: true
@@ -59,5 +58,4 @@ ActiveRecord::Schema.define(version: 20170530041425) do
 
   add_foreign_key "entries", "counters"
   add_foreign_key "entries", "users"
-  add_foreign_key "users", "counters"
 end
