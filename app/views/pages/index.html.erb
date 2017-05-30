@@ -3,7 +3,7 @@
     <div class="col-md-3">
       <%= link_to image_tag("svg_smileys/#{smiley[1]}.svg", alt: smiley[0]), send_feedback_entries_path(feedback: smiley[1]), remote: true %>
       <div class="text-center">
-        <%= smiley[0] %>
+        <h3><%= smiley[0] %></h3>
       </div>
     </div>
   <% end %>
