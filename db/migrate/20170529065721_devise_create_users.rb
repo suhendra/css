@@ -9,8 +9,8 @@ class DeviseCreateUsers < ActiveRecord::Migration[5.1]
       t.string   :firstname
       t.string   :lastname
       t.string   :email,              null: false, default: ""
-      t.references :counter,          foreign_key: true
-      t.string   :role
+      t.integer :counter_id,          foreign_key: true
+      t.string   :role, null: false, default: "CS"
 
       ## Recoverable
       t.string   :reset_password_token

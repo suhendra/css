@@ -8,15 +8,17 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#">BNI Customer Satisfaction Survey</a>
+      <a class="navbar-brand" href="/">BNI Customer Satisfaction Survey</a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse navbar-ex1-collapse">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="/">Home</a></li>
-        <li><a href="/counters">Counter</a></li>
-        <li><a href="/survey">Customer Response</a></li>
+        <% if current_user && current_user.role == "Admin" %>
+          <li><a href="/counters">Counters</a></li>
+          <li><a href="/users">Users</a></li>
+          <li><a href="/entries">Customer Response</a></li>
+        <% end %>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <%= login_helper %>

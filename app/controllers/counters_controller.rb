@@ -1,4 +1,5 @@
 class CountersController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_counter, only: [:show, :edit, :update, :destroy]
 
   # GET /counters
