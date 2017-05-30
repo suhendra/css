@@ -8,6 +8,8 @@
     ])
 end
 
+counter_ids = Counter.all.pluck(:id)
+
 1.times do |user|
   User.create([
     {
@@ -16,7 +18,8 @@ end
       firstname: 'rizki',
       lastname: 'muhammad',
       password: '123456',
-      counter_id: 1
+      counter_id: counter_ids.sample,
+      role: "CS"
     },
     {
       username: 'suhendra',
@@ -24,7 +27,8 @@ end
       firstname: 'suhendra',
       lastname: 'katrali',
       password: '123456',
-      counter_id: 2
+      counter_id: counter_ids.sample,
+      role: "CS"
     },
     {
       username: 'adhi',
@@ -32,8 +36,8 @@ end
       firstname: 'adhi',
       lastname: 'guna',
       password: '123456',
-      counter_id: 3
-
+      counter_id: counter_ids.sample,
+      role: "CS"
     },
     {
       username: 'aulia',
@@ -41,7 +45,8 @@ end
       firstname: 'aulia',
       lastname: 'sabril',
       password: '123456',
-      counter_id: 4
+      counter_id: counter_ids.sample,
+      role: "CS"
     },
     {
       username: 'syaiful',
@@ -49,7 +54,9 @@ end
       firstname: 'syaiful',
       lastname: 'sabril',
       password: '123456',
-      counter_id: 5
+      counter_id: counter_ids.sample,
+      role: "Admin"
     }
     ])
 end
+puts "END"

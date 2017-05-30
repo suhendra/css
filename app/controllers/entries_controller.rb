@@ -1,4 +1,5 @@
 class EntriesController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_entry, only: [:show, :edit, :update, :destroy]
 
   # GET /entries
@@ -21,10 +22,24 @@ class EntriesController < ApplicationController
   def edit
   end
 
+  def send_feedback
+    @entry = Entry.new
+    @entry.feedback = params[:feedback]
+    @entry.date = Date.current
+    @entry.user = current_user
+    @entry.counter = current_user.counter
+    @entry.save
+    respond_to do |format|
+      format.js
+    end
+  end
+
   # POST /entries
   # POST /entries.json
   def create
     @entry = Entry.new(entry_params)
+    @entry.user = current_user
+    @entry.counter = current_user.counter
 
     respond_to do |format|
       if @entry.save

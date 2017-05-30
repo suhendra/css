@@ -40,7 +40,7 @@ ActiveRecord::Schema.define(version: 20170530041425) do
     t.string "lastname"
     t.string "email", default: "", null: false
     t.integer "counter_id"
-    t.string "role"
+    t.string "role", default: "CS", null: false
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"

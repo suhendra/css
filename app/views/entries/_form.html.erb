@@ -2,7 +2,7 @@
   <%= f.error_notification %>
 
   <div class="inputs">
-    <%= f.input :feedback, collection: Entry.feedback_option_list %>
+    <%= f.input :feedback, collection: Entry.feedback_option_list, include_blank: false %>
   </div>
 
   <div class="actions">

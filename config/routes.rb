@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
-  resources :entries
+  resources :entries do
+    collection do
+      get "send_feedback/:feedback", to: "entries#send_feedback", as: :send_feedback
+    end
+  end
   resources :counters
   root to: "pages#index"
   devise_for :users, skip: [:sessions]
