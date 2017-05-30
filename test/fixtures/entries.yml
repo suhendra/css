@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  counter: one
+  date: 2017-05-30
+  feedback: MyString
+  description: MyText
+
+two:
+  user: two
+  counter: two
+  date: 2017-05-30
+  feedback: MyString
+  description: MyText
