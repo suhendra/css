@@ -1,5 +1,5 @@
 <% if current_user && current_user.role == "Admin" %>
-
+  <%= render "pages/reports" %>
 <% elsif current_user %>
   <h1 class="text-center">
     <%= current_user.counter.name.titleize %>
