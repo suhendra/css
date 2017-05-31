@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   resources :entries do
     collection do
       get "send_feedback/:feedback", to: "entries#send_feedback", as: :send_feedback
+      get :get_reports
     end
   end
   resources :users
