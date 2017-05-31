@@ -6,7 +6,7 @@ class EntriesController < ApplicationController
   # GET /entries
   # GET /entries.json
   def index
-    @entries = Entry.all
+    @users = User.includes(:counter, :entries)
   end
 
   # GET /entries/1
