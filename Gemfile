@@ -60,3 +60,4 @@ gem 'cancancan', '~> 1.10'
 gem "chartkick"
 gem 'groupdate'
 gem "jquery-rails"
+gem "select2-rails"
