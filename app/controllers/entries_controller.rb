@@ -38,12 +38,23 @@ class EntriesController < ApplicationController
   end
 
   def get_reports
-    @date_start = params[:date_start].try(:to_date) || 2.years.ago.to_date
-    @date_end = params[:date_end].try(:to_date) || Date.current
-    @counter_id = params[:counter_id] || "all"
     @range_type = params[:range_type] || "yearly"
-    @rows = []
+    if @range_type == "daily"
+      @date_start = params[:date_start].try(:to_date) || 2.weeks.ago.to_date
+    elsif @range_type == "weekly"
+      @date_start = params[:date_start].try(:to_date) || 1.months.ago.to_date
+    elsif @range_type == "monthly"
+      @date_start = params[:date_start].try(:to_date) || 1.years.ago.to_date
+    elsif @range_type == "yearly"
+      @date_start = params[:date_start].try(:to_date) || Entry.order("date asc").first.date
+    end
+    @date_end = params[:date_end].try(:to_date) || Date.current
     @entries = Entry.where("date >= ? AND date <= ?", @date_start, @date_end)
+    @counter_id = params[:counter_id] || "all"
+    if @counter_id != "all" && @counter_id.present?
+      @entries = @entries.where("counter_id = ? ", @counter_id)
+    end
+    @rows = []
     if @range_type == "daily"
       @cols = ['Date', 'Sangat Puas', 'Puas', 'Cukup Puas', 'Tidak Puas']
       @entries.select("date_trunc('day', date) as day, entries.id, entries.feedback").group_by(&:day).each do |date, entries|

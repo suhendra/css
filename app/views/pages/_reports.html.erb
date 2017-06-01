@@ -1,14 +1,41 @@
 
+<div class"row">
+  <div class="col-md-12">
+    <%= simple_form_for(@entry, url: get_reports_entries_path, method: :get, remote: true) do |f| %>
+      <%= f.error_notification %>
 
-<div id="columnchart_material" style="width: 800px; height: 500px;"></div>
+      <div class="inputs">
+        <div class="row">
+          <div class="col-md-1">
+            <%= f.input :counter_id, collection: Counter.all, label: false, include_blank: "all", input_html: {name: "counter_id", id: "counter_id"} %>
+          </div>
+          <div class="col-md-1">
+            <%#= f.input :user_id, collection: User.all.collect{|a| [a.firstname, a.id]}, label: "CSO: ", include_blank: "all" %>
+            <%= f.input :range_type, collection: Entry.range_type_list, label: false, include_blank: false, input_html: {name: "range_type", id: "range_type"} %>
+          </div>
+      </div>
+
+      <div class="actions">
+        <%#= f.button :submit, "Search" %>
+      </div>
+    <% end %>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <hr/>
+    <div id="columnchart_material" style="width: 100%; height: 500px;"></div>
+  </div>
 
 <script type="text/javascript">
   google.charts.load('current', {'packages':['bar']});
   google.charts.setOnLoadCallback(drawChart);
 
   function drawChart() {
+    var counter_id = $('#counter_id').val();
+    var range_type = $('#range_type').val();
     var jsonData = $.ajax({
-      url: "<%= get_reports_entries_path %>",
+      url: '/entries/get_reports?counter_id=' + counter_id + '&range_type=' + range_type,
       dataType: "json",
       async: false
     }).responseText;
@@ -33,5 +60,9 @@
 
     chart.draw(data, google.charts.Bar.convertOptions(options));
   }
+
+  $('#counter_id, #range_type').on('change', function(){
+    drawChart();
+  });
 </script>
 <%#= column_chart data, stacked: false, adapter: "google" %>
