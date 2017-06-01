@@ -19,9 +19,11 @@ jQuery ->
       `a = a`
       dataTable.push rows[a]
     data = google.visualization.arrayToDataTable(dataTable)
-    options = chart:
-      title: 'Feedback Reports'
-      subtitle: subtitle
+    options =
+      chart:
+        title: 'Feedback Reports'
+        subtitle: subtitle
+      colors: ['#4285f4', '#0f9d58', '#f4b400', '#db4437']
     chart = new (google.charts.Bar)(document.getElementById('columnchart_material'))
     chart.draw data, google.charts.Bar.convertOptions(options)
     return
