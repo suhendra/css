@@ -26,46 +26,4 @@
     <hr/>
     <div id="columnchart_material" style="width: 100%; height: 500px;"></div>
   </div>
-
-<script type="text/javascript">
-  $('#counter_id, #range_type').select2({
-      theme: "bootstrap"
-  });
-  google.charts.load('current', {'packages':['bar']});
-  google.charts.setOnLoadCallback(drawChart);
-
-  function drawChart() {
-    var counter_id = $('#counter_id').val();
-    var range_type = $('#range_type').val();
-    var jsonData = $.ajax({
-      url: '/entries/get_reports?counter_id=' + counter_id + '&range_type=' + range_type,
-      dataType: "json",
-      async: false
-    }).responseText;
-    var obj = JSON.parse(jsonData);
-    var cols = obj.cols;
-    var rows = obj.rows;
-    var dataTable = []
-    dataTable.push(cols);
-    for (a in rows) {
-      dataTable.push(rows[a]);
-    }
-    var data = google.visualization.arrayToDataTable(dataTable);
-
-    var options = {
-      chart: {
-        title: 'Feedback Reports',
-        subtitle: 'All Branches',
-      }
-    };
-
-    var chart = new google.charts.Bar(document.getElementById('columnchart_material'));
-
-    chart.draw(data, google.charts.Bar.convertOptions(options));
-  }
-
-  $('#counter_id, #range_type').on('change', function(){
-    drawChart();
-  });
-</script>
-<%#= column_chart data, stacked: false, adapter: "google" %>
+</div>
