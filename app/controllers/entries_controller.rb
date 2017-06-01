@@ -51,32 +51,35 @@ class EntriesController < ApplicationController
     @date_end = params[:date_end].try(:to_date) || Date.current
     @entries = Entry.where("date >= ? AND date <= ?", @date_start, @date_end)
     @counter_id = params[:counter_id] || "all"
+    @subtitle = "All Branches"
     if @counter_id != "all" && @counter_id.present?
+      @counter = Counter.find params[:counter_id]
       @entries = @entries.where("counter_id = ? ", @counter_id)
+      @subtitle = @counter.name
     end
     @rows = []
     if @range_type == "daily"
-      @cols = ['Date', 'Sangat Puas', 'Puas', 'Cukup Puas', 'Tidak Puas']
+      @cols = ['Daily', 'Sangat Puas', 'Puas', 'Cukup Puas', 'Tidak Puas']
       @entries.select("date_trunc('day', date) as day, entries.id, entries.feedback").group_by(&:day).each do |date, entries|
         @rows << process_entries(date.strftime("%m-%d-%Y"), entries)
       end
     elsif @range_type == "weekly"
-      @cols = ['Week', 'Sangat Puas', 'Puas', 'Cukup Puas', 'Tidak Puas']
+      @cols = ['Weekly', 'Sangat Puas', 'Puas', 'Cukup Puas', 'Tidak Puas']
       @entries.select("date_trunc('week', date) as week, entries.id, entries.feedback").group_by(&:week).each do |date, entries|
         @rows << process_entries(date.strftime("W%W %Y"), entries)
       end
     elsif @range_type == "monthly"
-      @cols = ['Month', 'Sangat Puas', 'Puas', 'Cukup Puas', 'Tidak Puas']
+      @cols = ['Monthly', 'Sangat Puas', 'Puas', 'Cukup Puas', 'Tidak Puas']
       @entries.select("date_trunc('month', date) as month, entries.id, entries.feedback").group_by(&:month).each do |date, entries|
         @rows << process_entries(date.strftime("%b %Y"), entries)
       end
     elsif @range_type == "yearly"
-      @cols = ['Year', 'Sangat Puas', 'Puas', 'Cukup Puas', 'Tidak Puas']
+      @cols = ['Yearly', 'Sangat Puas', 'Puas', 'Cukup Puas', 'Tidak Puas']
       @entries.select("date_trunc('year', date) as year, entries.id, entries.feedback").group_by(&:year).each do |date, entries|
         @rows << process_entries(date.strftime("%Y"), entries)
       end
     end
-    @entries = { cols: @cols, rows: @rows }
+    @entries = { cols: @cols, rows: @rows, subtitle: @subtitle }
     respond_to do |format|
       format.js
       format.json { render json: @entries, status: "200" }

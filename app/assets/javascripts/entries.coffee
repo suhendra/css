@@ -12,6 +12,7 @@ jQuery ->
     obj = JSON.parse(jsonData)
     cols = obj.cols
     rows = obj.rows
+    subtitle = obj.subtitle
     dataTable = []
     dataTable.push cols
     for a of rows
@@ -20,7 +21,7 @@ jQuery ->
     data = google.visualization.arrayToDataTable(dataTable)
     options = chart:
       title: 'Feedback Reports'
-      subtitle: 'All Branches'
+      subtitle: subtitle
     chart = new (google.charts.Bar)(document.getElementById('columnchart_material'))
     chart.draw data, google.charts.Bar.convertOptions(options)
     return
