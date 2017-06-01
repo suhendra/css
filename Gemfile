@@ -24,6 +24,7 @@ gem 'turbolinks', '~> 5'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.5'
 gem 'pg'
+gem 'mysql2'
 gem 'devise'
 gem 'simple_form'
 gem 'devise-bootstrap-views', '~> 0.0.11'
@@ -58,4 +59,3 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'cancancan', '~> 1.10'
 gem "chartkick"
 gem 'groupdate'
-gem "jquery-rails"

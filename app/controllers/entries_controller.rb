@@ -38,45 +38,40 @@ class EntriesController < ApplicationController
   end
 
   def get_reports
-    @date_start = params[:date_start].try(:to_date) || 1.months.ago.to_date
+    @date_start = params[:date_start].try(:to_date) || 2.years.ago.to_date
     @date_end = params[:date_end].try(:to_date) || Date.current
     @counter_id = params[:counter_id] || "all"
-    @range_type = params[:range_type] || "daily"
+    @range_type = params[:range_type] || "yearly"
+    @rows = []
     @entries = Entry.where("date >= ? AND date <= ?", @date_start, @date_end)
-    if @counter_id == "All"
-      @entries = @entries.where(counter_id: @counter_id).order("date asc")#.select("id, date, feedback").to_a
-    end
     if @range_type == "daily"
       @cols = ['Date', 'Sangat Puas', 'Puas', 'Cukup Puas', 'Tidak Puas']
-      @entries = @entries.group_by_day(:date).count
+      @entries.select("date_trunc('day', date) as day, entries.id, entries.feedback").group_by(&:day).each do |date, entries|
+        @rows << process_entries(date.strftime("%m-%d-%Y"), entries)
+      end
     elsif @range_type == "weekly"
       @cols = ['Week', 'Sangat Puas', 'Puas', 'Cukup Puas', 'Tidak Puas']
-      @entries = @entries.group_by_week(&:date)
+      @entries.select("date_trunc('week', date) as week, entries.id, entries.feedback").group_by(&:week).each do |date, entries|
+        @rows << process_entries(date.strftime("W%W %Y"), entries)
+      end
     elsif @range_type == "monthly"
       @cols = ['Month', 'Sangat Puas', 'Puas', 'Cukup Puas', 'Tidak Puas']
-      @entries = @entries.group_by_month(&:date)
+      @entries.select("date_trunc('month', date) as month, entries.id, entries.feedback").group_by(&:month).each do |date, entries|
+        @rows << process_entries(date.strftime("%b %Y"), entries)
+      end
     elsif @range_type == "yearly"
       @cols = ['Year', 'Sangat Puas', 'Puas', 'Cukup Puas', 'Tidak Puas']
-      @entries = @entries.group_by_year(&:date)
+      @entries.select("date_trunc('year', date) as year, entries.id, entries.feedback").group_by(&:year).each do |date, entries|
+        @rows << process_entries(date.strftime("%Y"), entries)
+      end
     end
-
-    @entries =
-      {
-        cols: @cols,
-        rows: [
-          ['2014', 1000, 400, 200, 50],
-          ['2015', 1170, 460, 250, 30],
-          ['2016', 660, 1120, 300, 40],
-          ['2017', 1030, 540, 350, 10]
-        ]
-      }
-
-
+    @entries = { cols: @cols, rows: @rows }
     respond_to do |format|
       format.js
       format.json { render json: @entries, status: "200" }
     end
   end
+
 
   # POST /entries
   # POST /entries.json
@@ -119,6 +114,12 @@ class EntriesController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  protected
+    def process_entries(date, entries)
+      [date, entries.select{|e| e.feedback == "3"}.length, entries.select{|e| e.feedback == "2"}.length, entries.select{|e| e.feedback == "1"}.length, entries.select{|e| e.feedback == "0"}.length]
+    end
+
 
   private
     # Use callbacks to share common setup or constraints between actions.
