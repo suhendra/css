@@ -37,11 +37,11 @@ jQuery ->
     drawChart()
     return
   $('#datetimepicker1').datetimepicker
-    format: 'MM/DD/YYYY'
-    defaultDate: '<%= (Entry.first.date).strftime("%Y-%m-%d")%>'
+    format: 'DD-MM-YYYY'
+    defaultDate: moment().subtract(2, 'years')
   $('#datetimepicker2').datetimepicker
-    format: 'MM/DD/YYYY'
-    defaultDate: '<%= Date.current.strftime("%Y-%m-%d")%>'
+    format: 'DD-MM-YYYY'
+    defaultDate: moment().format('YYYY-MM-DD')
     useCurrent: false
   $('#datetimepicker1').on 'dp.change', (e) ->
     $('#datetimepicker2').data('DateTimePicker').minDate e.date
