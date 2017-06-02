@@ -11,6 +11,14 @@
 // about supported directives.
 //
 //= require rails-ujs
+//= require jquery
+//= require jquery_ujs
 //= require turbolinks
+//= require Chart.bundle
+//= require chartkick
+//= require select2
+//= require moment
+//= require moment/id
+//= require bootstrap-datetimepicker
 //= require_tree .
 //= require chartkick

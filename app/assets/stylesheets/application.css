@@ -10,6 +10,19 @@
  * files in this directory. Styles in this file should be added after the last require_* statement.
  * It is generally better to create a new file per style scope.
  *
+ *= require bootstrap-datetimepicker
+ *= require select2
+ *= require select2-bootstrap
  *= require_tree .
  *= require_self
  */
+
+ .select2-container {
+  position: relative;
+  z-index: 2;
+  float: left;
+  width: 100% !important;
+  margin-bottom: 0;
+  display: table;
+  table-layout: fixed;
+}

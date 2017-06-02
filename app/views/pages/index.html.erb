@@ -1,5 +1,5 @@
 <% if current_user && current_user.role == "Admin" %>
-
+  <%= render "pages/reports" %>
 <% elsif current_user %>
   <h1 class="text-center">
     <%= current_user.counter.name.titleize %>
@@ -17,5 +17,16 @@
         </div>
       </div>
     <% end %>
+  </div>
+  <div class="row">
+    <div class="col-md-12 hidden-md hidden-lg text-center">
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <%= link_to "Logout", destroy_user_session_path, method: :delete %>
+    </div>
   </div>
 <% end %>

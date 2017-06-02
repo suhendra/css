@@ -22,6 +22,13 @@ class UsersController < ApplicationController
   def edit
   end
 
+  def get_users
+    @users = User.where(counter_id: params[:counter_id]).select("id, firstname")
+    respond_to do |format|
+      format.json { render json: @users, status: "200" }
+    end
+  end
+
   # POST /users
   # POST /users.json
   def create

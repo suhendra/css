@@ -1,0 +1,13 @@
+var obj = JSON.parse('<%= @entries %>');
+var cols = obj.cols;
+var rows = obj.rows;
+var dataTable = []
+dataTable.push(cols);
+for (a in rows) {
+  dataTable.push(rows[a]);
+}
+var data = google.visualization.arrayToDataTable(dataTable);
+
+var chart = new google.charts.Bar(document.getElementById('columnchart_material'));
+
+chart.draw(data, google.charts.Bar.convertOptions(options));

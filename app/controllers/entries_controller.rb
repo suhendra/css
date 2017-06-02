@@ -2,6 +2,7 @@ class EntriesController < ApplicationController
   layout 'reports'
   before_action :authenticate_user!
   before_action :set_entry, only: [:show, :edit, :update, :destroy]
+  # skip_before_action :protect_from_forgery, only: [:get_reports]
   load_and_authorize_resource
 
   # GET /entries
@@ -44,6 +45,63 @@ class EntriesController < ApplicationController
     end
   end
 
+  def get_reports
+    @user_id = params[:user_id]
+    @range_type = params[:range_type] || "yearly"
+    if @range_type == "daily"
+      @date_start = params[:date_start].try(:to_date) || 2.weeks.ago.to_date
+    elsif @range_type == "weekly"
+      @date_start = params[:date_start].try(:to_date) || 1.months.ago.to_date
+    elsif @range_type == "monthly"
+      @date_start = params[:date_start].try(:to_date) || 1.years.ago.to_date
+    elsif @range_type == "yearly"
+      @date_start = params[:date_start].try(:to_date) || Entry.order("date asc").first.date
+    end
+    @date_end = params[:date_end].try(:to_date) || Date.current
+    @entries = Entry.where("date >= ? AND date <= ?", @date_start, @date_end)
+    @counter_id = params[:counter_id] || "all"
+    @subtitle = "All Branches"
+    if @counter_id != "all" && @counter_id.present?
+      @counter = Counter.find params[:counter_id]
+      @entries = @entries.where("entries.counter_id = ? ", @counter_id)
+      @subtitle = @counter.name
+    end
+    if @user_id != "all" && @user_id.present?
+      @user = User.find @user_id
+      @entries = @entries.where("entries.user_id = ?", @user_id)
+      @subtitle = "#{@counter.name} - #{@user.firstname}"
+    end
+    @entries = @entries.order("entries.date asc")
+    @rows = []
+    if @range_type == "daily"
+      @cols = ['Daily', 'Sangat Puas', 'Puas', 'Cukup Puas', 'Tidak Puas']
+      @entries.select("date_trunc('day', date) as day, entries.id, entries.date, entries.feedback, entries.user_id, entries.counter_id").group_by(&:day).each do |date, entries|
+        @rows << process_entries(date.strftime("%m-%d-%Y"), entries)
+      end
+    elsif @range_type == "weekly"
+      @cols = ['Weekly', 'Sangat Puas', 'Puas', 'Cukup Puas', 'Tidak Puas']
+      @entries.select("date_trunc('week', date) as week, entries.id, entries.date, entries.feedback, entries.user_id, entries.counter_id").group_by(&:week).each do |date, entries|
+        @rows << process_entries(date.strftime("W%W %Y"), entries)
+      end
+    elsif @range_type == "monthly"
+      @cols = ['Monthly', 'Sangat Puas', 'Puas', 'Cukup Puas', 'Tidak Puas']
+      @entries.select("date_trunc('month', date) as month, entries.id, entries.date, entries.feedback, entries.user_id, entries.counter_id").group_by(&:month).each do |date, entries|
+        @rows << process_entries(date.strftime("%b %Y"), entries)
+      end
+    elsif @range_type == "yearly"
+      @cols = ['Yearly', 'Sangat Puas', 'Puas', 'Cukup Puas', 'Tidak Puas']
+      @entries.select("date_trunc('year', date) as year, entries.id, entries.date, entries.feedback").group_by(&:year).each do |date, entries|
+        @rows << process_entries(date.strftime("%Y"), entries)
+      end
+    end
+    @entries = { cols: @cols, rows: @rows, subtitle: @subtitle }
+    respond_to do |format|
+      format.js
+      format.json { render json: @entries, status: "200" }
+    end
+  end
+
+
   # POST /entries
   # POST /entries.json
   def create
@@ -85,6 +143,12 @@ class EntriesController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  protected
+    def process_entries(date, entries)
+      [date, entries.select{|e| e.feedback == "3"}.length, entries.select{|e| e.feedback == "2"}.length, entries.select{|e| e.feedback == "1"}.length, entries.select{|e| e.feedback == "0"}.length]
+    end
+
 
   private
     # Use callbacks to share common setup or constraints between actions.

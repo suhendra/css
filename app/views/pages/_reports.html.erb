@@ -1,0 +1,47 @@
+
+<div class"row">
+  <div class="col-md-12">
+    <%= simple_form_for(@entry, url: get_reports_entries_path, method: :get, remote: true) do |f| %>
+      <%= f.error_notification %>
+
+      <div class="inputs">
+        <div class="row">
+          <div class="col-md-2">
+            <%= f.input :counter_id, collection: Counter.all, label: false, include_blank: "all", input_html: {name: "counter_id", id: "counter_id"} %>
+          </div>
+          <div class="col-md-2" id="select_user">
+            <%= f.input :user_id, collection: User.all.limit(10).collect{|u| [u.firstname, u.id]}, label: false, include_blank: "all", input_html: {name: "user_id", id: "user_id"} %>
+          </div>
+          <div class="col-md-2">
+            <%= f.input :range_type, collection: Entry.range_type_list, label: false, include_blank: false, input_html: {name: "range_type", id: "range_type"} %>
+          </div>
+          <div class="col-md-2">
+            <div class="form-group">
+                <div class='input-group date' id='datetimepicker1'>
+                    <input type='text' name="date_start" id="date_start" class="form-control" />
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-group">
+                <div class='input-group d2te' id='datetimepicker2'>
+                    <input type='text' name="date_end" id="date_end" class="form-control" />
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+          </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <hr/>
+    <div id="columnchart_material" style="width: 100%; height: 500px;"></div>
+  </div>
+</div>

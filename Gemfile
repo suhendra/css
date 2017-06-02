@@ -24,6 +24,7 @@ gem 'turbolinks', '~> 5'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.5'
 gem 'pg'
+gem 'mysql2'
 gem 'devise'
 gem 'simple_form'
 gem 'devise-bootstrap-views', '~> 0.0.11'
@@ -61,3 +62,7 @@ gem 'cancancan', '~> 1.10'
 gem 'groupdate'
 gem 'hightop'
 gem 'chartkick'
+gem "jquery-rails"
+gem "select2-rails"
+gem 'momentjs-rails', '>= 2.9.0'
+gem 'bootstrap3-datetimepicker-rails', '~> 4.14.30'
