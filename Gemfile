@@ -57,11 +57,8 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'cancancan', '~> 1.10'
-
-# ankane reports tools https://github.com/ankane
+gem "chartkick"
 gem 'groupdate'
-gem 'hightop'
-gem 'chartkick'
 gem "jquery-rails"
 gem "select2-rails"
 gem 'momentjs-rails', '>= 2.9.0'
