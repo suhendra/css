@@ -63,26 +63,26 @@ class EntriesController < ApplicationController
       @entries = @entries.where("entries.user_id = ?", @user_id)
       @subtitle = "#{@counter.name} - #{@user.firstname}"
     end
-    @entries = @entries.order("entries.id asc")
+    @entries = @entries.order("entries.date asc")
     @rows = []
     if @range_type == "daily"
       @cols = ['Daily', 'Sangat Puas', 'Puas', 'Cukup Puas', 'Tidak Puas']
-      @entries.select("date_trunc('day', date) as day, entries.id, entries.feedback, entries.user_id, entries.counter_id").group_by(&:day).each do |date, entries|
+      @entries.select("date_trunc('day', date) as day, entries.id, entries.date, entries.feedback, entries.user_id, entries.counter_id").group_by(&:day).each do |date, entries|
         @rows << process_entries(date.strftime("%m-%d-%Y"), entries)
       end
     elsif @range_type == "weekly"
       @cols = ['Weekly', 'Sangat Puas', 'Puas', 'Cukup Puas', 'Tidak Puas']
-      @entries.select("date_trunc('week', date) as week, entries.id, entries.feedback, entries.user_id, entries.counter_id").group_by(&:week).each do |date, entries|
+      @entries.select("date_trunc('week', date) as week, entries.id, entries.date, entries.feedback, entries.user_id, entries.counter_id").group_by(&:week).each do |date, entries|
         @rows << process_entries(date.strftime("W%W %Y"), entries)
       end
     elsif @range_type == "monthly"
       @cols = ['Monthly', 'Sangat Puas', 'Puas', 'Cukup Puas', 'Tidak Puas']
-      @entries.select("date_trunc('month', date) as month, entries.id, entries.feedback, entries.user_id, entries.counter_id").group_by(&:month).each do |date, entries|
+      @entries.select("date_trunc('month', date) as month, entries.id, entries.date, entries.feedback, entries.user_id, entries.counter_id").group_by(&:month).each do |date, entries|
         @rows << process_entries(date.strftime("%b %Y"), entries)
       end
     elsif @range_type == "yearly"
       @cols = ['Yearly', 'Sangat Puas', 'Puas', 'Cukup Puas', 'Tidak Puas']
-      @entries.select("date_trunc('year', date) as year, entries.id, entries.feedback").group_by(&:year).each do |date, entries|
+      @entries.select("date_trunc('year', date) as year, entries.id, entries.date, entries.feedback").group_by(&:year).each do |date, entries|
         @rows << process_entries(date.strftime("%Y"), entries)
       end
     end
