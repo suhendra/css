@@ -55,29 +55,29 @@ class EntriesController < ApplicationController
     @subtitle = "All Branches"
     if @counter_id != "all" && @counter_id.present?
       @counter = Counter.find params[:counter_id]
-      @entries = @entries.where("counter_id = ? ", @counter_id)
+      @entries = @entries.where("entries.counter_id = ? ", @counter_id)
       @subtitle = @counter.name
     end
     if @user_id != "all" && @user_id.present?
       @user = User.find @user_id
-      @entries.where("user_id = ?", @user_id)
+      @entries = @entries.where("entries.user_id = ?", @user_id)
       @subtitle = "#{@counter.name} - #{@user.firstname}"
     end
 
     @rows = []
     if @range_type == "daily"
       @cols = ['Daily', 'Sangat Puas', 'Puas', 'Cukup Puas', 'Tidak Puas']
-      @entries.select("date_trunc('day', date) as day, entries.id, entries.feedback").group_by(&:day).each do |date, entries|
+      @entries.select("date_trunc('day', date) as day, entries.id, entries.feedback, entries.user_id, entries.counter_id").group_by(&:day).each do |date, entries|
         @rows << process_entries(date.strftime("%m-%d-%Y"), entries)
       end
     elsif @range_type == "weekly"
       @cols = ['Weekly', 'Sangat Puas', 'Puas', 'Cukup Puas', 'Tidak Puas']
-      @entries.select("date_trunc('week', date) as week, entries.id, entries.feedback").group_by(&:week).each do |date, entries|
+      @entries.select("date_trunc('week', date) as week, entries.id, entries.feedback, entries.user_id, entries.counter_id").group_by(&:week).each do |date, entries|
         @rows << process_entries(date.strftime("W%W %Y"), entries)
       end
     elsif @range_type == "monthly"
       @cols = ['Monthly', 'Sangat Puas', 'Puas', 'Cukup Puas', 'Tidak Puas']
-      @entries.select("date_trunc('month', date) as month, entries.id, entries.feedback").group_by(&:month).each do |date, entries|
+      @entries.select("date_trunc('month', date) as month, entries.id, entries.feedback, entries.user_id, entries.counter_id").group_by(&:month).each do |date, entries|
         @rows << process_entries(date.strftime("%b %Y"), entries)
       end
     elsif @range_type == "yearly"
