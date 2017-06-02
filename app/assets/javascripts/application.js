@@ -21,3 +21,4 @@
 //= require moment/id
 //= require bootstrap-datetimepicker
 //= require_tree .
+//= require chartkick

@@ -1,4 +1,5 @@
 class EntriesController < ApplicationController
+  layout 'reports'
   before_action :authenticate_user!
   before_action :set_entry, only: [:show, :edit, :update, :destroy]
   # skip_before_action :protect_from_forgery, only: [:get_reports]
@@ -8,6 +9,13 @@ class EntriesController < ApplicationController
   # GET /entries.json
   def index
     @users = User.includes(:counter, :entries)
+    @counters = Counter.includes(:entries)
+    @all_entries= Entry.all
+    sql = "select name, date, feedback, count(*) as jumlah from entries inner join counters on counters.id = counter_id group by counters.name, date, feedback"
+    @entries = Entry.connection.select_all(sql).to_hash
+    @counters_dates = @entries.uniq { |entry| [ entry['name'], entry['date'] ] }
+    # ActiveRecord::Base.connection.execute(sql)
+    # @months = Entry.includes(:counter).select("counters.name, entries.date as tgl, entries.feedback as feedback, count(*) as jumlah").group("counter_id, date, feedback")
   end
 
   # GET /entries/1
