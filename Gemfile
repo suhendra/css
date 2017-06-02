@@ -56,3 +56,8 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'cancancan', '~> 1.10'
+
+# ankane reports tools https://github.com/ankane
+gem 'groupdate'
+gem 'hightop'
+gem 'chartkick'
