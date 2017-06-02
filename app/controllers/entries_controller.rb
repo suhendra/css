@@ -38,6 +38,7 @@ class EntriesController < ApplicationController
   end
 
   def get_reports
+    @user_id = params[:user_id]
     @range_type = params[:range_type] || "yearly"
     if @range_type == "daily"
       @date_start = params[:date_start].try(:to_date) || 2.weeks.ago.to_date
@@ -57,6 +58,12 @@ class EntriesController < ApplicationController
       @entries = @entries.where("counter_id = ? ", @counter_id)
       @subtitle = @counter.name
     end
+    if @user_id != "all" && @user_id.present?
+      @user = User.find @user_id
+      @entries.where("user_id = ?", @user_id)
+      @subtitle = "#{@counter.name} - #{@user.firstname}"
+    end
+
     @rows = []
     if @range_type == "daily"
       @cols = ['Daily', 'Sangat Puas', 'Puas', 'Cukup Puas', 'Tidak Puas']

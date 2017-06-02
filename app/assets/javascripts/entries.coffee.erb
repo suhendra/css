@@ -7,8 +7,9 @@ jQuery ->
     range_type = $('#range_type').val()
     date_start = $('#date_start').val()
     date_end = $('#date_end').val()
+    user_id = $('#user_id').val()
     jsonData = $.ajax(
-      url: '/entries/get_reports?counter_id=' + counter_id + '&range_type=' + range_type + '&date_start=' + date_start + '&date_end=' + date_end
+      url: '/entries/get_reports?counter_id=' + counter_id + '&range_type=' + range_type + '&date_start=' + date_start + '&date_end=' + date_end + '&user_id=' + user_id
       dataType: 'json'
       async: false).responseText
     obj = JSON.parse(jsonData)
@@ -30,12 +31,24 @@ jQuery ->
     chart.draw data, google.charts.Bar.convertOptions(options)
     return
 
-  $('#counter_id, #range_type').select2 theme: 'bootstrap'
+  $('#counter_id, #user_id, #range_type').select2 theme: 'bootstrap'
   google.charts.load 'current', 'packages': [ 'bar' ]
   google.charts.setOnLoadCallback drawChart
-  $('#counter_id, #range_type').on 'change', ->
+  $('#counter_id').on 'change', ->
+    if $(this).attr('id') == 'counter_id'
+      c_id = $(this).val();
+      $.get '/users/get_users.json', { counter_id: c_id }, (data) ->
+        # Remove the existing options in the responses drop down:
+        $('#user_id').html ''
+        # Loop over the json and populate the Responses options:
+        $('#user_id').append '<option value=\'\'>all</option>'
+        $.each data, (index, value) ->
+          $('#user_id').append '<option value=\'' + value.id + '\'>' + value.firstname + '</option>'
+    return
+  $('#counter_id, #user_id, #range_type').on 'change', ->
     drawChart()
     return
+
   $('#datetimepicker1').datetimepicker
     format: 'DD-MM-YYYY'
     defaultDate: moment().subtract(2, 'years')
