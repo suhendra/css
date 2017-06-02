@@ -2,7 +2,7 @@ class Entry < ApplicationRecord
   belongs_to :user
   belongs_to :counter
 
-  attr_accessor :range_type
+  attr_accessor :range_type, :date_start, :date_end
 
   def self.feedback_option_list
     # sangat puas-puas-cukup puas-tidak puas

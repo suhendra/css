@@ -40,13 +40,13 @@ class EntriesController < ApplicationController
   def get_reports
     @range_type = params[:range_type] || "yearly"
     if @range_type == "daily"
-      @date_start = params[:date_start].try(:to_date) || 2.weeks.ago.to_date
+      @date_start = Date.strptime(params[:date_start], "%m/%d/%Y") || 2.weeks.ago.to_date
     elsif @range_type == "weekly"
-      @date_start = params[:date_start].try(:to_date) || 1.months.ago.to_date
+      @date_start = Date.strptime(params[:date_start], "%m/%d/%Y") || 1.months.ago.to_date
     elsif @range_type == "monthly"
-      @date_start = params[:date_start].try(:to_date) || 1.years.ago.to_date
+      @date_start = Date.strptime(params[:date_start], "%m/%d/%Y") || 1.years.ago.to_date
     elsif @range_type == "yearly"
-      @date_start = params[:date_start].try(:to_date) || Entry.order("date asc").first.date
+      @date_start = Date.strptime(params[:date_start], "%m/%d/%Y") || Entry.order("date asc").first.date
     end
     @date_end = params[:date_end].try(:to_date) || Date.current
     @entries = Entry.where("date >= ? AND date <= ?", @date_start, @date_end)

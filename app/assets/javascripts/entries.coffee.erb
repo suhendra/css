@@ -5,8 +5,10 @@ jQuery ->
   drawChart = ->
     counter_id = $('#counter_id').val()
     range_type = $('#range_type').val()
+    date_start = $('#date_start').val()
+    date_end = $('#date_end').val()
     jsonData = $.ajax(
-      url: '/entries/get_reports?counter_id=' + counter_id + '&range_type=' + range_type
+      url: '/entries/get_reports?counter_id=' + counter_id + '&range_type=' + range_type + '&date_start=' + date_start + '&date_end=' + date_end
       dataType: 'json'
       async: false).responseText
     obj = JSON.parse(jsonData)
@@ -32,6 +34,21 @@ jQuery ->
   google.charts.load 'current', 'packages': [ 'bar' ]
   google.charts.setOnLoadCallback drawChart
   $('#counter_id, #range_type').on 'change', ->
+    drawChart()
+    return
+  $('#datetimepicker1').datetimepicker
+    format: 'MM/DD/YYYY'
+    defaultDate: '<%= (Entry.first.date).strftime("%Y-%m-%d")%>'
+  $('#datetimepicker2').datetimepicker
+    format: 'MM/DD/YYYY'
+    defaultDate: '<%= Date.current.strftime("%Y-%m-%d")%>'
+    useCurrent: false
+  $('#datetimepicker1').on 'dp.change', (e) ->
+    $('#datetimepicker2').data('DateTimePicker').minDate e.date
+    drawChart()
+    return
+  $('#datetimepicker2').on 'dp.change', (e) ->
+    $('#datetimepicker1').data('DateTimePicker').maxDate e.date
     drawChart()
     return
 

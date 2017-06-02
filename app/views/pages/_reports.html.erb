@@ -10,13 +10,28 @@
             <%= f.input :counter_id, collection: Counter.all, label: false, include_blank: "all", input_html: {name: "counter_id", id: "counter_id"} %>
           </div>
           <div class="col-md-2">
-            <%#= f.input :user_id, collection: User.all.collect{|a| [a.firstname, a.id]}, label: "CSO: ", include_blank: "all" %>
             <%= f.input :range_type, collection: Entry.range_type_list, label: false, include_blank: false, input_html: {name: "range_type", id: "range_type"} %>
           </div>
-      </div>
-
-      <div class="actions">
-        <%#= f.button :submit, "Search" %>
+          <div class="col-md-2">
+            <div class="form-group">
+                <div class='input-group date' id='datetimepicker1'>
+                    <input type='text' name="date_start" id="date_start" class="form-control" />
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-group">
+                <div class='input-group d2te' id='datetimepicker2'>
+                    <input type='text' name="date_end" id="date_end" class="form-control" />
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+          </div>
       </div>
     <% end %>
   </div>
