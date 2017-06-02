@@ -63,7 +63,7 @@ class EntriesController < ApplicationController
       @entries = @entries.where("entries.user_id = ?", @user_id)
       @subtitle = "#{@counter.name} - #{@user.firstname}"
     end
-
+    @entries = @entries.order("entries.id asc")
     @rows = []
     if @range_type == "daily"
       @cols = ['Daily', 'Sangat Puas', 'Puas', 'Cukup Puas', 'Tidak Puas']
