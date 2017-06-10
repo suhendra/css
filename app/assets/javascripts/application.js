@@ -20,4 +20,5 @@
 //= require moment
 //= require moment/id
 //= require bootstrap-datetimepicker
+//= require sweetalert
 //= require_tree .

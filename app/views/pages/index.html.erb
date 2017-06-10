@@ -11,7 +11,7 @@
   <div class="row">
     <% Entry.feedback_option_list.each do |smiley| %>
       <div class="col-md-3 col-xs-3">
-        <%= link_to image_tag("svg_smileys/#{smiley[1]}.svg", alt: smiley[0]), send_feedback_entries_path(feedback: smiley[1]), remote: false %>
+        <%= link_to image_tag("svg_smileys/#{smiley[1]}.svg", alt: smiley[0]), send_feedback_entries_path(feedback: smiley[1]), remote: true %>
         <div class="text-center">
           <h2><%= smiley[0] %></h2>
         </div>
